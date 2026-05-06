@@ -233,6 +233,7 @@ $values['LastChecked'] = Get-Date -Format 'h:mm tt'
 
 $lines = New-Object System.Collections.Generic.List[string]
 $lines.Add('; Rainmeter Codex Halo')
+$lines.Add('[Variables]')
 foreach ($key in @('FiveHourValue', 'FiveHourReset', 'WeeklyValue', 'WeeklyReset', 'LastChecked', 'DataStatus')) {
     $lines.Add("$key=$($values[$key])")
 }
