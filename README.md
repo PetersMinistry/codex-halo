@@ -1,6 +1,6 @@
 # Codex Halo Rainmeter Skin
 
-This is a Rainmeter design system for the Codex 5h and weekly rate-limit counters. It includes a circular Halo Pro instrument, a horizontal desk-bar layout, a vertical stacked layout, a low-text Glyph meter, and a control panel for switching designs and sizes.
+This is a Rainmeter suite for the Codex 5h and weekly rate-limit counters. It includes a circular Halo Pro instrument, a horizontal desk-bar layout, a vertical stacked layout, a low-text Glyph meter, and a control panel for switching designs and sizes.
 
 ## Credits
 
@@ -8,10 +8,8 @@ Created by [PetersMinistry](https://github.com/PetersMinistry). Released under t
 
 ## Files
 
-- `CodexHalo.ini` is the standard Rainmeter skin.
-- `CodexHalo Compact.ini` is the compact size.
-- `CodexHalo Large.ini` is the large size.
 - `Control/Settings.ini` is the design and size selector.
+- `Halo/Compact.ini`, `Halo/Standard.ini`, and `Halo/Large.ini` are the circular Halo layouts.
 - `Horizontal/Compact.ini`, `Horizontal/Standard.ini`, and `Horizontal/Large.ini` are the wide layouts.
 - `Vertical/Compact.ini`, `Vertical/Standard.ini`, and `Vertical/Large.ini` are the stacked layouts.
 - `Glyph/Compact.ini`, `Glyph/Standard.ini`, and `Glyph/Large.ini` are the low-text circular meter layouts.
@@ -23,6 +21,8 @@ Created by [PetersMinistry](https://github.com/PetersMinistry). Released under t
 - `@Resources/Layouts/GlyphPro.inc` is the shared twin circular meter layout.
 - `@Resources/Scripts/Update-CodexLimits.ps1` reads the latest Codex session rate-limit event and refreshes the include file. The skin calls it once an hour by default and when the status pill is clicked.
 - `Install-To-Rainmeter.ps1` can reinstall this folder into the standard Rainmeter skins location if the project is copied elsewhere.
+
+The suite follows the usual Rainmeter shape: one root config folder, one shared `@Resources` folder, and one subfolder per skin family. Each skin family keeps its size variants as `.ini` files in that family folder.
 
 ## Install
 
@@ -36,9 +36,9 @@ In Rainmeter, refresh all skins and load one of:
 
 ```text
 Rainmeter Codex Halo\Control\Settings.ini
-Rainmeter Codex Halo\CodexHalo Compact.ini
-Rainmeter Codex Halo\CodexHalo.ini
-Rainmeter Codex Halo\CodexHalo Large.ini
+Rainmeter Codex Halo\Halo\Compact.ini
+Rainmeter Codex Halo\Halo\Standard.ini
+Rainmeter Codex Halo\Halo\Large.ini
 Rainmeter Codex Halo\Horizontal\Compact.ini
 Rainmeter Codex Halo\Horizontal\Standard.ini
 Rainmeter Codex Halo\Horizontal\Large.ini
@@ -50,7 +50,7 @@ Rainmeter Codex Halo\Glyph\Standard.ini
 Rainmeter Codex Halo\Glyph\Large.ini
 ```
 
-If the folder is edited from a different staging location, run `Install-To-Rainmeter.ps1` from that staging folder to copy it into the current user's Rainmeter skins folder and reload the default Halo skin.
+If the folder is edited from a different staging location, run `Install-To-Rainmeter.ps1` from that staging folder to copy it into the current user's Rainmeter skins folder and reload `Rainmeter Codex Halo\Halo\Standard.ini`.
 
 ## Switching Designs
 

@@ -11,7 +11,8 @@ if (-not (Test-Path -LiteralPath $target)) {
 
 $rainmeter = Join-Path ${env:ProgramFiles} 'Rainmeter\Rainmeter.exe'
 if (Test-Path -LiteralPath $rainmeter) {
-    Start-Process -FilePath $rainmeter -ArgumentList '!DeactivateConfig "Rainmeter Codex Halo" "CodexHalo.ini"' -WindowStyle Hidden -Wait
+    Start-Process -FilePath $rainmeter -ArgumentList '!DeactivateConfig "Rainmeter Codex Halo"' -WindowStyle Hidden -Wait
+    Start-Process -FilePath $rainmeter -ArgumentList '!DeactivateConfig "Rainmeter Codex Halo\Halo"' -WindowStyle Hidden -Wait
 }
 
 Get-ChildItem -LiteralPath $source -Force | ForEach-Object {
@@ -20,7 +21,7 @@ Get-ChildItem -LiteralPath $source -Force | ForEach-Object {
 
 if (Test-Path -LiteralPath $rainmeter) {
     Start-Process -FilePath $rainmeter -ArgumentList '!RefreshApp' -WindowStyle Hidden -Wait
-    Start-Process -FilePath $rainmeter -ArgumentList '!ActivateConfig "Rainmeter Codex Halo" "CodexHalo.ini"' -WindowStyle Hidden
+    Start-Process -FilePath $rainmeter -ArgumentList '!ActivateConfig "Rainmeter Codex Halo\Halo" "Standard.ini"' -WindowStyle Hidden
 }
 
 Write-Host "Installed Codex Halo to $target"
