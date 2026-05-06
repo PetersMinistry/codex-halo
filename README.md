@@ -2,6 +2,13 @@
 
 This is a Rainmeter suite for the Codex 5h and weekly rate-limit counters. It includes a circular Halo Pro instrument, a horizontal desk-bar layout, a vertical stacked layout, a low-text Glyph meter, and a control panel for switching designs and sizes.
 
+## Version
+
+Current build: `0.5.1`
+
+- `0.5.1` fixes Rainmeter variable parsing for the local Codex limits cache by writing `@Resources/CodexLimits.inc` as a proper `[Variables]` include.
+- `0.5.0` introduced the reorganized Rainmeter suite structure, Welcome flow, Control selector, Halo, Wide, Stack, and Glyph designs.
+
 ## Credits
 
 Created by [PetersMinistry](https://github.com/PetersMinistry). Released under the MIT License.
