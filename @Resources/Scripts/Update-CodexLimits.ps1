@@ -1,6 +1,4 @@
 # Rainmeter Codex Halo
-# Owner: Peter (https://github.com/PetersMinistry)
-# Lead development: Codex
 
 param(
     [string]$OutputPath = "$PSScriptRoot\..\CodexLimits.inc"
@@ -165,9 +163,15 @@ function Get-LatestCodexRateLimits {
 
     $today = Get-Date
     $yesterday = $today.AddDays(-1)
+    function Join-SessionDatePath {
+        param([DateTime]$Date)
+
+        return (Join-Path $sessionRoot (Join-Path $Date.ToString('yyyy') (Join-Path $Date.ToString('MM') $Date.ToString('dd'))))
+    }
+
     $searchRoots = @(
-        (Join-Path $sessionRoot $today.ToString('yyyy\\MM\\dd')),
-        (Join-Path $sessionRoot $yesterday.ToString('yyyy\\MM\\dd'))
+        (Join-SessionDatePath $today),
+        (Join-SessionDatePath $yesterday)
     ) | Where-Object { Test-Path -LiteralPath $_ }
 
     if (-not $searchRoots) {
@@ -229,7 +233,6 @@ $values['LastChecked'] = Get-Date -Format 'h:mm tt'
 
 $lines = New-Object System.Collections.Generic.List[string]
 $lines.Add('; Rainmeter Codex Halo')
-$lines.Add('; Owner: Peter (https://github.com/PetersMinistry)')
 foreach ($key in @('FiveHourValue', 'FiveHourReset', 'WeeklyValue', 'WeeklyReset', 'LastChecked', 'DataStatus')) {
     $lines.Add("$key=$($values[$key])")
 }

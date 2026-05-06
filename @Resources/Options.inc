@@ -1,5 +1,4 @@
 ; Codex Halo user options.
-; Owner: Peter (https://github.com/PetersMinistry)
 ; Keep this file inside the Rainmeter Codex Halo folder.
 
 ; Visual preset shared by the current designs.

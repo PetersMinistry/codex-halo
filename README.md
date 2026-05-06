@@ -2,9 +2,9 @@
 
 This is a Rainmeter design system for the Codex 5h and weekly rate-limit counters. It includes a circular Halo Pro instrument, a horizontal desk-bar layout, a vertical stacked layout, a low-text Glyph meter, and a control panel for switching designs and sizes.
 
-## Project Owner
+## Credits
 
-Peter owns this project and public attribution points to [https://github.com/PetersMinistry](https://github.com/PetersMinistry). Codex is the lead developer/maintainer for this skin.
+Created by [PetersMinistry](https://github.com/PetersMinistry). Released under the MIT License.
 
 ## Files
 

@@ -1,6 +1,4 @@
 # Rainmeter Codex Halo
-# Owner: Peter (https://github.com/PetersMinistry)
-# Lead development: Codex
 
 $ErrorActionPreference = 'Stop'
 

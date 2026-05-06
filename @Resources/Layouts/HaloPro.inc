@@ -1,6 +1,4 @@
 ; Rainmeter Codex Halo
-; Owner: Peter (https://github.com/PetersMinistry)
-; Lead development: Codex
 
 [MeasureFull]
 Measure=Calc
@@ -47,7 +45,7 @@ Parameter=-NoProfile -ExecutionPolicy Bypass -File "#@#Scripts\Update-CodexLimit
 State=Hide
 OutputType=ANSI
 UpdateDivider=-1
-FinishAction=[!Refresh "#CURRENTCONFIG#"]
+FinishAction=[!RefreshApp]
 
 [MeterCanvas]
 Meter=Shape
