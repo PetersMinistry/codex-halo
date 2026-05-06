@@ -1,0 +1,13 @@
+HANDOFF.md
+.git-meta/
+*.bak
+*.tmp
+*.log
+*.zip
+*.rmskin
+Screenshots/
+screenshots/
+*.png
+*.jpg
+*.jpeg
+*.webp
