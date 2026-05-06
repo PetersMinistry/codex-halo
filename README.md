@@ -61,7 +61,9 @@ Every loadable skin also adds a short native Rainmeter right-click quick menu:
 - `Open Codex Halo Control`
 - `Refresh Codex Data`
 
-Use the Control panel when you want exact design and size choices like compact, standard, or large. The native right-click menu intentionally stays at two custom actions so Rainmeter does not move it into an extra `Custom skin actions` submenu. Rainmeter's built-in Variants and root-config menus remain available for normal skin loading.
+Use the Control panel when you want exact design and size choices like compact, standard, or large. Each design-size button toggles that skin: click once to load it, click the same loaded button again to unload it. Selecting a different design closes the other display families first, which keeps browsing clean while leaving the Control panel open.
+
+The native right-click menu intentionally stays at two custom actions so Rainmeter does not move it into an extra `Custom skin actions` submenu. Rainmeter's built-in Variants and root-config menus remain available for normal skin loading.
 
 The Control panel has a small `X` button in the top-right corner. It closes only the Control panel and leaves the currently selected display skin running.
 
