@@ -45,7 +45,7 @@ Parameter=-NoProfile -ExecutionPolicy Bypass -File "#ResourceRoot#Scripts\Update
 State=Hide
 OutputType=ANSI
 UpdateDivider=-1
-FinishAction=[!Refresh "#CURRENTCONFIG#"]
+FinishAction=[!Refresh "Rainmeter Codex Halo\Welcome"][!Refresh "Rainmeter Codex Halo\Control"][!Refresh "Rainmeter Codex Halo\Halo"][!Refresh "Rainmeter Codex Halo\Horizontal"][!Refresh "Rainmeter Codex Halo\Vertical"][!Refresh "Rainmeter Codex Halo\Glyph"]
 
 [MeterCanvas]
 Meter=Shape

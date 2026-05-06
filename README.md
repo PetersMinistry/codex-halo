@@ -60,7 +60,7 @@ For public release, distribute Codex Halo as a `.rmskin` package made with Rainm
 
 ## Switching Designs
 
-Load `Rainmeter Codex Halo\Welcome\Welcome.ini` after install. Use **Start Halo** to load the standard Halo display, open the selector, and close the Welcome panel. You can also load `Rainmeter Codex Halo\Control\Settings.ini` directly for the full design panel.
+Load `Rainmeter Codex Halo\Welcome\Welcome.ini` after install. Use **Start Halo** to refresh the local Codex limit snapshot first, then load the standard Halo display, open the selector, and close the Welcome panel. You can also load `Rainmeter Codex Halo\Control\Settings.ini` directly for the full design panel.
 
 Every loadable skin also adds a short native Rainmeter right-click quick menu:
 
