@@ -40,12 +40,12 @@ DynamicVariables=1
 [MeasureRefresh]
 Measure=Plugin
 Plugin=RunCommand
-Program=powershell.exe
+Program=%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe
 Parameter=-NoProfile -ExecutionPolicy Bypass -File "#ResourceRoot#Scripts\Update-CodexLimits.ps1" -OutputPath "#ResourceRoot#CodexLimits.inc"
 State=Hide
 OutputType=ANSI
 UpdateDivider=-1
-FinishAction=[!RefreshApp]
+FinishAction=[!Refresh "#CURRENTCONFIG#"]
 
 [MeterCanvas]
 Meter=Shape

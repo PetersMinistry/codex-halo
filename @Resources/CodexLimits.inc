@@ -1,7 +1,7 @@
 ; Rainmeter Codex Halo
-FiveHourValue=0
-FiveHourReset=waiting
-WeeklyValue=0
-WeeklyReset=waiting
+FiveHourValue=100
+FiveHourReset=pending
+WeeklyValue=100
+WeeklyReset=pending
 LastChecked=never
 DataStatus=cached snapshot

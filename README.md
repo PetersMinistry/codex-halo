@@ -8,6 +8,7 @@ Created by [PetersMinistry](https://github.com/PetersMinistry). Released under t
 
 ## Files
 
+- `Welcome/Welcome.ini` is the first-run launcher and recommended post-install skin.
 - `Control/Settings.ini` is the design and size selector.
 - `Halo/Compact.ini`, `Halo/Standard.ini`, and `Halo/Large.ini` are the circular Halo layouts.
 - `Horizontal/Compact.ini`, `Horizontal/Standard.ini`, and `Horizontal/Large.ini` are the wide layouts.
@@ -36,6 +37,7 @@ In Rainmeter, refresh all skins and load one of:
 
 ```text
 Rainmeter Codex Halo\Control\Settings.ini
+Rainmeter Codex Halo\Welcome\Welcome.ini
 Rainmeter Codex Halo\Halo\Compact.ini
 Rainmeter Codex Halo\Halo\Standard.ini
 Rainmeter Codex Halo\Halo\Large.ini
@@ -50,11 +52,15 @@ Rainmeter Codex Halo\Glyph\Standard.ini
 Rainmeter Codex Halo\Glyph\Large.ini
 ```
 
-If the folder is edited from a different staging location, run `Install-To-Rainmeter.ps1` from that staging folder to copy it into the current user's Rainmeter skins folder and reload `Rainmeter Codex Halo\Halo\Standard.ini`.
+If the folder is edited from a different staging location, run `Install-To-Rainmeter.ps1` from that staging folder to copy it into the current user's Rainmeter skins folder and reload `Rainmeter Codex Halo\Welcome\Welcome.ini`.
+
+## Distribution
+
+For public release, distribute Codex Halo as a `.rmskin` package made with Rainmeter's Skin Packager. The package should include the `Rainmeter Codex Halo` root config folder and load `Rainmeter Codex Halo\Welcome\Welcome.ini` after installation. That gives users Rainmeter's standard flow: double-click the `.rmskin`, click Install, then start from the Welcome panel.
 
 ## Switching Designs
 
-Load `Rainmeter Codex Halo\Control\Settings.ini` for the full selector panel.
+Load `Rainmeter Codex Halo\Welcome\Welcome.ini` after install. Use **Start Halo** to load the standard Halo display, open the selector, and close the Welcome panel. You can also load `Rainmeter Codex Halo\Control\Settings.ini` directly for the full design panel.
 
 Every loadable skin also adds a short native Rainmeter right-click quick menu:
 
