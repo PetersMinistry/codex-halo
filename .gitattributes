@@ -1,0 +1,7 @@
+*.ini linguist-language=INI
+*.inc linguist-language=INI
+*.ps1 linguist-language=PowerShell
+
+*.md linguist-documentation
+LICENSE linguist-documentation
+docs/** linguist-documentation
