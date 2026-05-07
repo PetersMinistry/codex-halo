@@ -18,6 +18,18 @@ It displays:
 
 Codex Halo reads local Codex session files only. It does not call an external API.
 
+## Preview
+
+![Codex Halo control panel](docs/screenshots/control-panel.png)
+
+![Halo design](docs/screenshots/halo-standard.png)
+
+![Horizontal design](docs/screenshots/horizontal-standard.png)
+
+![Vertical design](docs/screenshots/vertical-compact.png)
+
+![Glyph design](docs/screenshots/glyph-standard.png)
+
 ## Install
 
 Copy this folder to:
