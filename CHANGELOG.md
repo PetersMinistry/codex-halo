@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.5.4
+
+- Fixed unattended 5-minute refresh so active display skins reread `CodexLimits.inc` after the local updater writes fresh values.
+- Applies to Halo, Horizontal, Vertical, and Glyph layouts.
+- Uses a current-config refresh instead of a global Rainmeter refresh to avoid desktop jitter.
+
 ## 0.5.3
 
 - Reduced Glyph value text sizes across Compact, Standard, and Large layouts so `100%` fits cleanly inside the circular meters without crowding the ring lines.

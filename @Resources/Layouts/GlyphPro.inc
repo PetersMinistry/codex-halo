@@ -38,7 +38,7 @@ Parameter=-NoProfile -ExecutionPolicy Bypass -File "#@#Scripts\Update-CodexLimit
 State=Hide
 OutputType=ANSI
 UpdateDivider=-1
-FinishAction=[!UpdateMeasure *][!UpdateMeter *][!Redraw]
+FinishAction=[!Refresh "#CURRENTCONFIG#"]
 
 [MeasureAutoRefresh]
 Measure=Calc
