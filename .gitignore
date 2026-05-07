@@ -13,5 +13,6 @@ screenshots/
 *.jpeg
 *.webp
 !docs/
+!docs/*.png
 !docs/screenshots/
 !docs/screenshots/*.png

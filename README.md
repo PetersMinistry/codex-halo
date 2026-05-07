@@ -1,7 +1,7 @@
 # Codex Halo
 
 <p align="center">
-  <img src="docs/screenshots/halo-standard.png" alt="Codex Halo circular Rainmeter skin" width="520">
+  <img src="docs/cover.png" alt="Codex Halo Rainmeter skin cover" width="900">
 </p>
 
 <p align="center">
