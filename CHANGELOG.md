@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.5.3
+
+- Reduced Glyph value text sizes across Compact, Standard, and Large layouts so `100%` fits cleanly inside the circular meters without crowding the ring lines.
+
 ## 0.5.2
 
 - Changed the default refresh interval from hourly to every 5 minutes.
