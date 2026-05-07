@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.5.5
+
+- Removed hard-coded display layer settings so Rainmeter's native Position menu owns Stay topmost, Topmost, Normal, Bottom, and On desktop behavior.
+- Replaced the 5-minute timer skin reload with an in-memory Lua reread of `CodexLimits.inc`, keeping local rate-limit values current without disturbing Rainmeter's saved position/layer state.
+- Updated Control and Welcome refresh actions to use the same local reread path instead of refreshing every Codex Halo display config.
+
 ## 0.5.4
 
 - Fixed unattended 5-minute refresh so active display skins reread `CodexLimits.inc` after the local updater writes fresh values.

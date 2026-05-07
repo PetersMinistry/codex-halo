@@ -40,6 +40,7 @@
 - Four display styles with multiple sizes
 - Control panel for switching layouts
 - Manual refresh from the skin or Rainmeter right-click menu
+- Respects Rainmeter's native Position menu for layer behavior
 - Local-only data reading, with no external API call
 
 ## Requirements
@@ -94,6 +95,8 @@ The current values are stored locally in:
 @Resources\CodexLimits.inc
 ```
 
+The 5-minute local refresh updates displayed values without reloading the active skin, so Rainmeter's own position and layer settings stay under user control.
+
 ## Privacy
 
 Codex Halo reads local Codex session files from the current Windows user. It does not scrape the web, call a hosted API, or send your usage data anywhere.
@@ -102,7 +105,7 @@ Compatibility depends on Codex writing local `rate_limits` events in its session
 
 ## Version
 
-Current build: `0.5.4`
+Current build: `0.5.5`
 
 See [CHANGELOG.md](CHANGELOG.md) for release notes.
 

@@ -30,6 +30,12 @@ Measure=Calc
 Formula=(#WeeklyValue# * #BarScale#)
 DynamicVariables=1
 
+[MeasureReadLimits]
+Measure=Script
+ScriptFile=#@#Scripts\Read-CodexLimits.lua
+LimitsPath=#@#CodexLimits.inc
+UpdateDivider=-1
+
 [MeasureRefresh]
 Measure=Plugin
 Plugin=RunCommand
@@ -38,7 +44,7 @@ Parameter=-NoProfile -ExecutionPolicy Bypass -File "#@#Scripts\Update-CodexLimit
 State=Hide
 OutputType=ANSI
 UpdateDivider=-1
-FinishAction=[!Refresh "#CURRENTCONFIG#"][!Refresh "Rainmeter Codex Halo\Welcome"][!Refresh "Rainmeter Codex Halo\Control"][!Refresh "Rainmeter Codex Halo\Halo"][!Refresh "Rainmeter Codex Halo\Horizontal"][!Refresh "Rainmeter Codex Halo\Vertical"][!Refresh "Rainmeter Codex Halo\Glyph"]
+FinishAction=[!CommandMeasure MeasureReadLimits "ReadLimits()"]
 
 [MeasureAutoRun]
 Measure=Plugin
@@ -48,7 +54,7 @@ Parameter=-NoProfile -ExecutionPolicy Bypass -File "#@#Scripts\Update-CodexLimit
 State=Hide
 OutputType=ANSI
 UpdateDivider=-1
-FinishAction=[!Refresh "#CURRENTCONFIG#"]
+FinishAction=[!CommandMeasure MeasureReadLimits "ReadLimits()"]
 
 [MeasureAutoRefresh]
 Measure=Calc
