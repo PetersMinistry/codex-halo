@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.5.2
+
+- Changed the default refresh interval from hourly to every 5 minutes.
+- Reworked automatic refresh to update values in place instead of reloading the skin, reducing drag jitter and helping Bottom positioning stay stable.
+- Made display skins explicitly use Rainmeter's Bottom layer.
+- Improved Halo manual refresh targets so the lower metric console, values, bars, and footer can refresh the snapshot directly.
+
 ## 0.5.1
 
 - Fixed Rainmeter variable parsing for the local Codex limit cache.

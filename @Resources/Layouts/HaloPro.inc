@@ -30,13 +30,6 @@ Measure=Calc
 Formula=(#WeeklyValue# * #BarScale#)
 DynamicVariables=1
 
-[MeasureHourlyPulse]
-Measure=Calc
-Formula=Counter
-IfCondition=(MeasureHourlyPulse >= #RefreshSeconds#) && ((MeasureHourlyPulse % #RefreshSeconds#) = 0)
-IfTrueAction=[!CommandMeasure MeasureRefresh "Run"]
-DynamicVariables=1
-
 [MeasureRefresh]
 Measure=Plugin
 Plugin=RunCommand
@@ -45,7 +38,24 @@ Parameter=-NoProfile -ExecutionPolicy Bypass -File "#@#Scripts\Update-CodexLimit
 State=Hide
 OutputType=ANSI
 UpdateDivider=-1
-FinishAction=[!Refresh "Rainmeter Codex Halo\Welcome"][!Refresh "Rainmeter Codex Halo\Control"][!Refresh "Rainmeter Codex Halo\Halo"][!Refresh "Rainmeter Codex Halo\Horizontal"][!Refresh "Rainmeter Codex Halo\Vertical"][!Refresh "Rainmeter Codex Halo\Glyph"]
+FinishAction=[!Refresh "#CURRENTCONFIG#"][!Refresh "Rainmeter Codex Halo\Welcome"][!Refresh "Rainmeter Codex Halo\Control"][!Refresh "Rainmeter Codex Halo\Halo"][!Refresh "Rainmeter Codex Halo\Horizontal"][!Refresh "Rainmeter Codex Halo\Vertical"][!Refresh "Rainmeter Codex Halo\Glyph"]
+
+[MeasureAutoRun]
+Measure=Plugin
+Plugin=RunCommand
+Program=%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe
+Parameter=-NoProfile -ExecutionPolicy Bypass -File "#@#Scripts\Update-CodexLimits.ps1" -OutputPath "#@#CodexLimits.inc"
+State=Hide
+OutputType=ANSI
+UpdateDivider=-1
+FinishAction=[!UpdateMeasure *][!UpdateMeter *][!Redraw]
+
+[MeasureAutoRefresh]
+Measure=Calc
+Formula=1
+UpdateDivider=#RefreshSeconds#
+DynamicVariables=1
+OnUpdateAction=[!CommandMeasure MeasureAutoRun "Run"]
 
 [MeterCanvas]
 Meter=Shape
@@ -244,6 +254,8 @@ Shape=Rectangle 0,0,#ConsoleW#,#ConsoleH#,#ConsoleRadius# | Fill Color #ConsoleF
 Shape2=Rectangle #ConsoleInset#,#DividerY#,#DividerW#,#DividerH#,#DividerRadius# | Fill Color 255,255,255,28 | StrokeWidth 0
 Shape3=Rectangle #ConsoleDividerX#,#DividerTop#,#DividerThin#,#DividerTall#,#DividerRadius# | Fill Color 255,255,255,24 | StrokeWidth 0
 DynamicVariables=1
+ToolTipText=Refresh data | 5H #FiveHourValue#% until #FiveHourReset# | WK #WeeklyValue#% until #WeeklyReset# | checked #LastChecked#
+LeftMouseUpAction=[!SetOption MeterStatusText Text "checking..."][!SetOption MeterFooter Text "checking snapshot..."][!UpdateMeter MeterStatusText][!UpdateMeter MeterFooter][!Redraw][!CommandMeasure MeasureRefresh "Run"]
 
 [MeterFiveLabel]
 Meter=String
@@ -274,6 +286,7 @@ AntiAlias=1
 Text=#FiveHourValue#%
 DynamicVariables=1
 ToolTipText=5H #FiveHourValue#% until #FiveHourReset#
+LeftMouseUpAction=[!SetOption MeterStatusText Text "checking..."][!SetOption MeterFooter Text "checking snapshot..."][!UpdateMeter MeterStatusText][!UpdateMeter MeterFooter][!Redraw][!CommandMeasure MeasureRefresh "Run"]
 
 [MeterFiveReset]
 Meter=String
@@ -301,6 +314,7 @@ Shape=Rectangle 0,0,#BarTrackW#,#BarH#,#BarRadius# | Fill Color 255,255,255,28 |
 Shape2=Rectangle 0,0,[MeasureFiveBar],#BarH#,#BarRadius# | Fill Color #FiveColor# | StrokeWidth 0
 DynamicVariables=1
 ToolTipText=5H #FiveHourValue#% until #FiveHourReset#
+LeftMouseUpAction=[!SetOption MeterStatusText Text "checking..."][!SetOption MeterFooter Text "checking snapshot..."][!UpdateMeter MeterStatusText][!UpdateMeter MeterFooter][!Redraw][!CommandMeasure MeasureRefresh "Run"]
 
 [MeterWeekLabel]
 Meter=String
@@ -331,6 +345,7 @@ AntiAlias=1
 Text=#WeeklyValue#%
 DynamicVariables=1
 ToolTipText=WK #WeeklyValue#% until #WeeklyReset#
+LeftMouseUpAction=[!SetOption MeterStatusText Text "checking..."][!SetOption MeterFooter Text "checking snapshot..."][!UpdateMeter MeterStatusText][!UpdateMeter MeterFooter][!Redraw][!CommandMeasure MeasureRefresh "Run"]
 
 [MeterWeekReset]
 Meter=String
@@ -358,6 +373,7 @@ Shape=Rectangle 0,0,#BarTrackW#,#BarH#,#BarRadius# | Fill Color 255,255,255,28 |
 Shape2=Rectangle 0,0,[MeasureWeekBar],#BarH#,#BarRadius# | Fill Color #WeekColor# | StrokeWidth 0
 DynamicVariables=1
 ToolTipText=WK #WeeklyValue#% until #WeeklyReset#
+LeftMouseUpAction=[!SetOption MeterStatusText Text "checking..."][!SetOption MeterFooter Text "checking snapshot..."][!UpdateMeter MeterStatusText][!UpdateMeter MeterFooter][!Redraw][!CommandMeasure MeasureRefresh "Run"]
 
 [MeterFooter]
 Meter=String
@@ -374,3 +390,5 @@ AntiAlias=1
 ClipString=1
 Text=checked #LastChecked#
 DynamicVariables=1
+ToolTipText=Refresh data | checked #LastChecked#
+LeftMouseUpAction=[!SetOption MeterStatusText Text "checking..."][!SetOption MeterFooter Text "checking snapshot..."][!UpdateMeter MeterStatusText][!UpdateMeter MeterFooter][!Redraw][!CommandMeasure MeasureRefresh "Run"]

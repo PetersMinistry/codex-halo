@@ -20,13 +20,6 @@ MinValue=0
 MaxValue=100
 DynamicVariables=1
 
-[MeasureHourlyPulse]
-Measure=Calc
-Formula=Counter
-IfCondition=(MeasureHourlyPulse >= #RefreshSeconds#) && ((MeasureHourlyPulse % #RefreshSeconds#) = 0)
-IfTrueAction=[!CommandMeasure MeasureRefresh "Run"]
-DynamicVariables=1
-
 [MeasureRefresh]
 Measure=Plugin
 Plugin=RunCommand
@@ -35,7 +28,24 @@ Parameter=-NoProfile -ExecutionPolicy Bypass -File "#@#Scripts\Update-CodexLimit
 State=Hide
 OutputType=ANSI
 UpdateDivider=-1
-FinishAction=[!Refresh "Rainmeter Codex Halo\Welcome"][!Refresh "Rainmeter Codex Halo\Control"][!Refresh "Rainmeter Codex Halo\Halo"][!Refresh "Rainmeter Codex Halo\Horizontal"][!Refresh "Rainmeter Codex Halo\Vertical"][!Refresh "Rainmeter Codex Halo\Glyph"]
+FinishAction=[!Refresh "#CURRENTCONFIG#"][!Refresh "Rainmeter Codex Halo\Welcome"][!Refresh "Rainmeter Codex Halo\Control"][!Refresh "Rainmeter Codex Halo\Halo"][!Refresh "Rainmeter Codex Halo\Horizontal"][!Refresh "Rainmeter Codex Halo\Vertical"][!Refresh "Rainmeter Codex Halo\Glyph"]
+
+[MeasureAutoRun]
+Measure=Plugin
+Plugin=RunCommand
+Program=%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe
+Parameter=-NoProfile -ExecutionPolicy Bypass -File "#@#Scripts\Update-CodexLimits.ps1" -OutputPath "#@#CodexLimits.inc"
+State=Hide
+OutputType=ANSI
+UpdateDivider=-1
+FinishAction=[!UpdateMeasure *][!UpdateMeter *][!Redraw]
+
+[MeasureAutoRefresh]
+Measure=Calc
+Formula=1
+UpdateDivider=#RefreshSeconds#
+DynamicVariables=1
+OnUpdateAction=[!CommandMeasure MeasureAutoRun "Run"]
 
 [MeterCanvas]
 Meter=Shape
