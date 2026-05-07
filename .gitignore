@@ -5,6 +5,7 @@ HANDOFF.md
 *.log
 *.zip
 *.rmskin
+dist/
 Screenshots/
 screenshots/
 *.png
