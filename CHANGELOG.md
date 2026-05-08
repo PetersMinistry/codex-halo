@@ -5,6 +5,7 @@
 - Added `Streamline/Standard.ini`, a compact thin horizontal display with visible 5-hour end time and weekly reset date.
 - Added Streamline to the Control panel as a one-click thin horizontal template.
 - Added refined `SignalRail/Standard.ini` and `MicroStack/Standard.ini` concept skins using Bahnschrift and Cascadia Mono.
+- Removed the visible style-name labels from Signal Rail and Micro Stack so the new designs stay cleaner on desktop.
 
 ## 0.5.5
 
