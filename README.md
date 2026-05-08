@@ -31,13 +31,20 @@
     <td align="center"><img src="docs/screenshots/vertical-compact.png" alt="Vertical design" width="220"><br><strong>Vertical</strong></td>
     <td align="center"><img src="docs/screenshots/glyph-standard.png" alt="Glyph design" width="280"><br><strong>Glyph</strong></td>
   </tr>
+  <tr>
+    <td align="center"><img src="docs/screenshots/streamline-standard.png" alt="Streamline design" width="360"><br><strong>Streamline</strong></td>
+    <td align="center"><img src="docs/screenshots/signalrail-standard.png" alt="Signal Rail design" width="360"><br><strong>Signal Rail</strong></td>
+  </tr>
+  <tr>
+    <td align="center" colspan="2"><img src="docs/screenshots/microstack-standard.png" alt="Micro Stack design" width="260"><br><strong>Micro Stack</strong></td>
+  </tr>
 </table>
 
 ## Features
 
 - Shows Codex 5-hour and weekly limit remaining
 - Includes reset time/date and last local refresh time
-- Four display styles with multiple sizes
+- Seven display styles, including refined Signal Rail and Micro Stack concepts
 - Control panel for switching layouts
 - Manual refresh from the skin or Rainmeter right-click menu
 - Respects Rainmeter's native Position menu for layer behavior
@@ -80,6 +87,9 @@ Available designs:
 - `Horizontal` - wide compact bar
 - `Vertical` - stacked compact panel
 - `Glyph` - minimal twin-meter display
+- `Streamline` - thin horizontal strip with visible 5-hour end time and weekly reset date
+- `SignalRail` - ultra-thin segmented rail with refined data typography
+- `MicroStack` - compact two-line stack with polished micro readouts
 
 ## Refresh
 
@@ -105,7 +115,7 @@ Compatibility depends on Codex writing local `rate_limits` events in its session
 
 ## Version
 
-Current build: `0.5.5`
+Current build: `0.5.6`
 
 See [CHANGELOG.md](CHANGELOG.md) for release notes.
 

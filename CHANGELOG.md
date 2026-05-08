@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.5.6
+
+- Added `Streamline/Standard.ini`, a compact thin horizontal display with visible 5-hour end time and weekly reset date.
+- Added Streamline to the Control panel as a one-click thin horizontal template.
+- Added refined `SignalRail/Standard.ini` and `MicroStack/Standard.ini` concept skins using Bahnschrift and Cascadia Mono.
+
 ## 0.5.5
 
 - Removed hard-coded display layer settings so Rainmeter's native Position menu owns Stay topmost, Topmost, Normal, Bottom, and On desktop behavior.

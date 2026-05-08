@@ -10,6 +10,8 @@ Theme=NeonPro
 ; - Horizontal/Compact.ini, Horizontal/Standard.ini, Horizontal/Large.ini
 ; - Vertical/Compact.ini, Vertical/Standard.ini, Vertical/Large.ini
 ; - Glyph/Compact.ini, Glyph/Standard.ini, Glyph/Large.ini
+; - Streamline/Standard.ini
+; - SignalRail/Standard.ini, MicroStack/Standard.ini
 Design=Halo
 
 ; Size options are also separate Rainmeter skins:
