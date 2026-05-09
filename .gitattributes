@@ -1,7 +1,0 @@
-*.ini linguist-detectable=false
-*.inc linguist-detectable=false
-*.ps1 linguist-language=PowerShell
-
-*.md linguist-documentation
-LICENSE linguist-documentation
-docs/** linguist-documentation
