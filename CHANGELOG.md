@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.5.7
+
+- Treats Codex reset timestamps as authoritative so expired windows roll forward instead of displaying stale event percentages.
+
 ## 0.5.6
 
 - Added `Streamline/Standard.ini`, a compact thin horizontal display with visible 5-hour end time and weekly reset date.

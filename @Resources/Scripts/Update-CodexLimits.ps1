@@ -72,6 +72,33 @@ function Convert-PercentRemaining {
     return $remaining
 }
 
+function Get-LimitWindowState {
+    param(
+        $UsedPercent,
+        [double]$ResetsAt,
+        [int]$WindowMinutes
+    )
+
+    $resetTime = Convert-UnixToLocal $ResetsAt
+    $now = Get-Date
+
+    if ($WindowMinutes -gt 0 -and $resetTime -le $now) {
+        do {
+            $resetTime = $resetTime.AddMinutes($WindowMinutes)
+        } while ($resetTime -le $now)
+
+        return [pscustomobject]@{
+            Remaining = 100
+            Reset     = (Format-Reset $resetTime $WindowMinutes)
+        }
+    }
+
+    return [pscustomobject]@{
+        Remaining = (Convert-PercentRemaining $UsedPercent)
+        Reset     = (Format-Reset $resetTime $WindowMinutes)
+    }
+}
+
 function Get-CodexRoot {
     if ($env:CODEX_HOME -and (Test-Path -LiteralPath $env:CODEX_HOME)) {
         return $env:CODEX_HOME
@@ -111,13 +138,15 @@ function Read-RateLimitFromLine {
     $primary = $limits.primary
     $secondary = $limits.secondary
     $eventTime = [DateTimeOffset]::Parse($event.timestamp).LocalDateTime
+    $primaryState = Get-LimitWindowState $primary.used_percent $primary.resets_at ([int]$primary.window_minutes)
+    $secondaryState = Get-LimitWindowState $secondary.used_percent $secondary.resets_at ([int]$secondary.window_minutes)
 
     return [pscustomobject]@{
         EventTime = $eventTime
-        FiveHourValue = (Convert-PercentRemaining $primary.used_percent)
-        FiveHourReset = (Format-Reset (Convert-UnixToLocal $primary.resets_at) ([int]$primary.window_minutes))
-        WeeklyValue = (Convert-PercentRemaining $secondary.used_percent)
-        WeeklyReset = (Format-Reset (Convert-UnixToLocal $secondary.resets_at) ([int]$secondary.window_minutes))
+        FiveHourValue = $primaryState.Remaining
+        FiveHourReset = $primaryState.Reset
+        WeeklyValue = $secondaryState.Remaining
+        WeeklyReset = $secondaryState.Reset
     }
 }
 
