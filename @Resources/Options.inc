@@ -1,4 +1,5 @@
 ; Codex Halo user options.
+; John 14:6 - The way, the truth, and the life.
 ; Keep this file inside the Rainmeter Codex Halo folder.
 
 ; Visual preset shared by the current designs.
