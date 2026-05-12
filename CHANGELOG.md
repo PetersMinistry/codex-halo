@@ -48,7 +48,7 @@
 - Added the Control panel for choosing design and size.
 - Added four display families: Halo, Horizontal, Vertical, and Glyph.
 - Added native Rainmeter right-click actions for opening Control and refreshing Codex data.
-- Normalized public metadata to `Author=PetersMinistry` and `License=MIT`.
+- Normalized public metadata and license fields across loadable pieces.
 
 ## Notes
 

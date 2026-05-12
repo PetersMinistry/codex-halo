@@ -119,8 +119,4 @@ Current build: `0.5.7`
 
 See [CHANGELOG.md](CHANGELOG.md) for release notes.
 
-## Credits
-
-Created by [PetersMinistry](https://github.com/PetersMinistry).
-
 Released under the MIT License.
