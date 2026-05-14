@@ -198,22 +198,25 @@ function Get-LatestCodexRateLimits {
         return (Join-Path $sessionRoot (Join-Path $Date.ToString('yyyy') (Join-Path $Date.ToString('MM') $Date.ToString('dd'))))
     }
 
-    $searchRoots = @(
+    $dateRoots = @(
         (Join-SessionDatePath $today),
         (Join-SessionDatePath $yesterday)
     ) | Where-Object { Test-Path -LiteralPath $_ }
 
-    if (-not $searchRoots) {
-        $searchRoots = @($sessionRoot)
-    }
-
-    $files = foreach ($root in $searchRoots) {
+    $dateFiles = foreach ($root in $dateRoots) {
         Get-ChildItem -LiteralPath $root -File -Filter '*.jsonl' -ErrorAction SilentlyContinue
     }
 
-    $candidates = @($files) |
+    $recentFiles = Get-ChildItem -LiteralPath $sessionRoot -Recurse -File -Filter '*.jsonl' -ErrorAction SilentlyContinue |
         Sort-Object LastWriteTime -Descending |
-        Select-Object -First 5
+        Select-Object -First 10
+
+    $candidates = @($dateFiles) + @($recentFiles) |
+        Where-Object { $_ } |
+        Group-Object FullName |
+        ForEach-Object { $_.Group[0] } |
+        Sort-Object LastWriteTime -Descending |
+        Select-Object -First 10
 
     $latest = $null
 

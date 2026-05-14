@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.5.8
+
+- Searches recently modified Codex session files across the full session tree, so long-running sessions stored under older date folders still provide live rate-limit data.
+
 ## 0.5.7
 
 - Treats Codex reset timestamps as authoritative so expired windows roll forward instead of displaying stale event percentages.

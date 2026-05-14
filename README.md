@@ -115,7 +115,7 @@ Compatibility depends on Codex writing local `rate_limits` events in its session
 
 ## Version
 
-Current build: `0.5.7`
+Current build: `0.5.8`
 
 See [CHANGELOG.md](CHANGELOG.md) for release notes.
 
