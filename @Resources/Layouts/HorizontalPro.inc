@@ -44,24 +44,16 @@ Parameter=-NoProfile -ExecutionPolicy Bypass -File "#@#Scripts\Update-CodexLimit
 State=Hide
 OutputType=ANSI
 UpdateDivider=-1
-FinishAction=[!CommandMeasure MeasureReadLimits "ReadLimits()"]
+Timeout=60000
+FinishAction=[!CommandMeasure MeasureReadLimits "FinishRefresh()"]
 
-[MeasureAutoRun]
-Measure=Plugin
-Plugin=RunCommand
-Program=%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe
-Parameter=-NoProfile -ExecutionPolicy Bypass -File "#@#Scripts\Update-CodexLimits.ps1" -OutputPath "#@#CodexLimits.inc"
-State=Hide
-OutputType=ANSI
-UpdateDivider=-1
-FinishAction=[!CommandMeasure MeasureReadLimits "ReadLimits()"]
 
-[MeasureAutoRefresh]
+[MeasureRefreshTimer]
 Measure=Calc
 Formula=1
 UpdateDivider=#RefreshSeconds#
 DynamicVariables=1
-OnUpdateAction=[!CommandMeasure MeasureAutoRun "Run"]
+OnUpdateAction=[!CommandMeasure MeasureReadLimits "RefreshLimits()"]
 
 [MeterCanvas]
 Meter=Shape
@@ -125,7 +117,7 @@ DynamicVariables=1
 ToolTipText=Refresh data | 5H #FiveHourValue#% until #FiveHourReset# | WK #WeeklyValue#% until #WeeklyReset# | checked #LastChecked#
 MouseOverAction=[!SetOption MeterStatusPill Shape "Rectangle 0,0,#StatusW#,#StatusH#,#StatusRadius# | Fill Color 255,255,255,36 | StrokeWidth 1 | Stroke Color 255,255,255,68"][!UpdateMeter MeterStatusPill][!Redraw]
 MouseLeaveAction=[!SetOption MeterStatusPill Shape "Rectangle 0,0,#StatusW#,#StatusH#,#StatusRadius# | Fill Color #PillFill# | StrokeWidth 1 | Stroke Color #PillStroke#"][!UpdateMeter MeterStatusPill][!Redraw]
-LeftMouseUpAction=[!SetOption MeterStatusText Text "checking..."][!SetOption MeterFooter Text "checking latest event..."][!UpdateMeter MeterStatusText][!UpdateMeter MeterFooter][!Redraw][!CommandMeasure MeasureRefresh "Run"]
+LeftMouseUpAction=[!SetOption MeterStatusText Text "checking..."][!SetOption MeterFooter Text "checking latest event..."][!UpdateMeter MeterStatusText][!UpdateMeter MeterFooter][!Redraw][!CommandMeasure MeasureReadLimits "RefreshLimits()"]
 
 [MeterStatusText]
 Meter=String
@@ -142,7 +134,7 @@ ClipString=1
 Text=#DataStatus#
 DynamicVariables=1
 ToolTipText=Refresh data | 5H #FiveHourValue#% until #FiveHourReset# | WK #WeeklyValue#% until #WeeklyReset# | checked #LastChecked#
-LeftMouseUpAction=[!SetOption MeterStatusText Text "checking..."][!SetOption MeterFooter Text "checking latest event..."][!UpdateMeter MeterStatusText][!UpdateMeter MeterFooter][!Redraw][!CommandMeasure MeasureRefresh "Run"]
+LeftMouseUpAction=[!SetOption MeterStatusText Text "checking..."][!SetOption MeterFooter Text "checking latest event..."][!UpdateMeter MeterStatusText][!UpdateMeter MeterFooter][!Redraw][!CommandMeasure MeasureReadLimits "RefreshLimits()"]
 
 [MeterFiveLabel]
 Meter=String
@@ -273,3 +265,4 @@ AntiAlias=1
 ClipString=1
 Text=checked #LastChecked#
 DynamicVariables=1
+

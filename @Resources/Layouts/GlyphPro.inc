@@ -34,24 +34,16 @@ Parameter=-NoProfile -ExecutionPolicy Bypass -File "#@#Scripts\Update-CodexLimit
 State=Hide
 OutputType=ANSI
 UpdateDivider=-1
-FinishAction=[!CommandMeasure MeasureReadLimits "ReadLimits()"]
+Timeout=60000
+FinishAction=[!CommandMeasure MeasureReadLimits "FinishRefresh()"]
 
-[MeasureAutoRun]
-Measure=Plugin
-Plugin=RunCommand
-Program=%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe
-Parameter=-NoProfile -ExecutionPolicy Bypass -File "#@#Scripts\Update-CodexLimits.ps1" -OutputPath "#@#CodexLimits.inc"
-State=Hide
-OutputType=ANSI
-UpdateDivider=-1
-FinishAction=[!CommandMeasure MeasureReadLimits "ReadLimits()"]
 
-[MeasureAutoRefresh]
+[MeasureRefreshTimer]
 Measure=Calc
 Formula=1
 UpdateDivider=#RefreshSeconds#
 DynamicVariables=1
-OnUpdateAction=[!CommandMeasure MeasureAutoRun "Run"]
+OnUpdateAction=[!CommandMeasure MeasureReadLimits "RefreshLimits()"]
 
 [MeterCanvas]
 Meter=Shape
@@ -296,4 +288,5 @@ DynamicVariables=1
 ToolTipText=#DataStatus# | checked #LastChecked# | click to refresh
 MouseOverAction=[!SetOption MeterStatusDot Shape "Ellipse #StatusDotX#,#StatusDotY#,#StatusDotR#,#StatusDotR# | Fill Color 255,255,255,210 | StrokeWidth 1 | Stroke Color 255,255,255,120"][!UpdateMeter MeterStatusDot][!Redraw]
 MouseLeaveAction=[!SetOption MeterStatusDot Shape "Ellipse #StatusDotX#,#StatusDotY#,#StatusDotR#,#StatusDotR# | Fill Color #FiveColor# | StrokeWidth 1 | Stroke Color 255,255,255,82"][!UpdateMeter MeterStatusDot][!Redraw]
-LeftMouseUpAction=[!CommandMeasure MeasureRefresh "Run"]
+LeftMouseUpAction=[!CommandMeasure MeasureReadLimits "RefreshLimits()"]
+

@@ -20,4 +20,5 @@ Design=Halo
 SkinSize=Standard
 
 ; Data refresh interval in seconds.
-RefreshSeconds=300
+RefreshSeconds=30
+RefreshBusy=0

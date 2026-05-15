@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.5.11
+
+- Tightens Codex limit refresh behavior to reduce visible drift from the Codex panel: default refresh interval is now 30 seconds.
+- Replaces the old separate auto RunCommand path across display layouts with one guarded refresh timer that calls the shared Lua helper.
+- Adds stale `RefreshBusy` recovery so a missed RunCommand finish callback cannot leave the skin stuck on old values.
+
 ## 0.5.10
 
 - Quieted Rainmeter log spam from MicroStack by updating only measures that exist in the active skin.
@@ -67,3 +73,4 @@
 ## Notes
 
 Codex Halo reads local Codex session logs only. It does not call an external API. Compatibility depends on Codex continuing to write local `rate_limits` events.
+
