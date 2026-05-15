@@ -37,10 +37,20 @@ function ReadLimits()
         end
     end
 
-    SKIN:Bang('!UpdateMeasure', 'MeasureFive')
-    SKIN:Bang('!UpdateMeasure', 'MeasureWeek')
-    SKIN:Bang('!UpdateMeasure', 'MeasureFiveBar')
-    SKIN:Bang('!UpdateMeasure', 'MeasureWeekBar')
+    local measures = {
+        'MeasureFive',
+        'MeasureWeek',
+        'MeasureFiveBar',
+        'MeasureWeekBar',
+        'MeasureFiveRail',
+        'MeasureFiveRailX',
+        'MeasureWeekRail'
+    }
+
+    for _, measure in ipairs(measures) do
+        SKIN:Bang('!UpdateMeasure', measure)
+    end
+
     SKIN:Bang('!UpdateMeter', '*')
     SKIN:Bang('!Redraw')
 end

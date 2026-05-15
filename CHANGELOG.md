@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.5.9
+
+- Forces a data refresh when Codex Halo skins are loaded or refreshed, preventing stale loaded values from sitting on screen.
+- Updates the Lua readback helper to refresh the rail measurements used by Signal Rail and Micro Stack.
+
 ## 0.5.8
 
 - Searches recently modified Codex session files across the full session tree, so long-running sessions stored under older date folders still provide live rate-limit data.
