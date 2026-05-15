@@ -1,5 +1,24 @@
+local limitsPath = nil
+local lastAutoRefresh = 0
+
 function Initialize()
     limitsPath = SKIN:MakePathAbsolute(SELF:GetOption('LimitsPath'))
+    lastAutoRefresh = os.time()
+end
+
+function Update()
+    local refreshSeconds = tonumber(SKIN:GetVariable('RefreshSeconds', '300')) or 300
+    if refreshSeconds < 30 then
+        refreshSeconds = 30
+    end
+
+    local now = os.time()
+
+    if now - lastAutoRefresh >= refreshSeconds then
+        RefreshLimits()
+    end
+
+    return 0
 end
 
 local function readLimitsFile(path)
@@ -48,9 +67,39 @@ function ReadLimits()
     }
 
     for _, measure in ipairs(measures) do
-        SKIN:Bang('!UpdateMeasure', measure)
+        if measureExists(measure) then
+            SKIN:Bang('!UpdateMeasure', measure)
+        end
     end
 
     SKIN:Bang('!UpdateMeter', '*')
     SKIN:Bang('!Redraw')
+end
+
+function RefreshLimits(measureName)
+    if SKIN:GetVariable('RefreshBusy', '0') == '1' then
+        return
+    end
+
+    lastAutoRefresh = os.time()
+    SKIN:Bang('!SetVariable', 'RefreshBusy', '1')
+    SKIN:Bang('!CommandMeasure', measureName or 'MeasureRefresh', 'Run')
+end
+
+function FinishRefresh()
+    lastAutoRefresh = os.time()
+    SKIN:Bang('!SetVariable', 'RefreshBusy', '0')
+    ReadLimits()
+end
+
+function measureExists(name)
+    if not SKIN.GetMeasure then
+        return false
+    end
+
+    local ok, measure = pcall(function()
+        return SKIN:GetMeasure(name)
+    end)
+
+    return ok and measure ~= nil
 end

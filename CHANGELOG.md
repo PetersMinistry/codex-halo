@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.5.10
+
+- Quieted Rainmeter log spam from MicroStack by updating only measures that exist in the active skin.
+- Changed MicroStack startup behavior to read cached values first and guard refresh launches, preventing overlapping RunCommand notices.
+
 ## 0.5.9
 
 - Forces a data refresh when Codex Halo skins are loaded or refreshed, preventing stale loaded values from sitting on screen.
