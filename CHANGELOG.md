@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.5.15
+
+- Restores the local Codex `rate_limits` event stream as the first-choice source because it matches the visible Codex app panel.
+- Keeps the web usage endpoint as fallback only, avoiding mismatches when the bearer-token usage response shows a different reset bucket.
+- Marks event-sourced cache reads as `live event` so the 30-second refresh guard still prevents overlapping updater launches.
+
 ## 0.5.14
 
 - Follows the visible Codex account usage row first instead of the extra model-specific row, matching the app menu when both are present.

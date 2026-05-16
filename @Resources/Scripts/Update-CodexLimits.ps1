@@ -249,6 +249,23 @@ function Test-UsageRegression {
     return $false
 }
 
+function Set-LimitValues {
+    param(
+        [System.Collections.Specialized.OrderedDictionary]$Values,
+        $Reading,
+        [string]$Status
+    )
+
+    $Values['FiveHourValue'] = [string]$Reading.FiveHourValue
+    $Values['FiveHourReset'] = $Reading.FiveHourReset
+    $Values['FiveHourResetEpoch'] = [string]$Reading.FiveHourResetEpoch
+    $Values['WeeklyValue'] = [string]$Reading.WeeklyValue
+    $Values['WeeklyReset'] = $Reading.WeeklyReset
+    $Values['WeeklyResetEpoch'] = [string]$Reading.WeeklyResetEpoch
+    $Values['LimitName'] = $Reading.LimitName
+    $Values['DataStatus'] = $Status
+}
+
 function Read-RateLimitFromLine {
     param([string]$Line)
 
@@ -280,7 +297,7 @@ function Read-RateLimitFromLine {
 
         return [pscustomobject]@{
             EventTime = $eventTime
-            LimitName = 'legacy event'
+            LimitName = 'local event'
             FiveHourValue = $primaryState.Remaining
             FiveHourReset = $primaryState.Reset
             FiveHourResetEpoch = $primaryState.ResetEpoch
@@ -402,40 +419,26 @@ if (Test-Path -LiteralPath $resolvedOutput) {
     $cacheAge = (Get-Date) - (Get-Item -LiteralPath $resolvedOutput).LastWriteTime
     if (
         $cacheAge.TotalSeconds -lt 30 -and
-        ($values['DataStatus'] -eq 'live usage' -or $values['DataStatus'] -eq 'cached usage')
+        ($values['DataStatus'] -eq 'live event' -or $values['DataStatus'] -eq 'live usage' -or $values['DataStatus'] -eq 'cached usage')
     ) {
         return
     }
 }
 
-$reading = Get-LatestCodexUsage
+$reading = Get-LatestCodexRateLimits
 
 if ($reading) {
-    $values['FiveHourValue'] = [string]$reading.FiveHourValue
-    $values['FiveHourReset'] = $reading.FiveHourReset
-    $values['FiveHourResetEpoch'] = [string]$reading.FiveHourResetEpoch
-    $values['WeeklyValue'] = [string]$reading.WeeklyValue
-    $values['WeeklyReset'] = $reading.WeeklyReset
-    $values['WeeklyResetEpoch'] = [string]$reading.WeeklyResetEpoch
-    $values['LimitName'] = $reading.LimitName
-    $values['DataStatus'] = 'live usage'
+    Set-LimitValues $values $reading 'live event'
 }
 else {
-    if ($values['DataStatus'] -eq 'live usage' -or $values['DataStatus'] -eq 'cached usage') {
-        $values['DataStatus'] = 'cached usage'
+    $reading = Get-LatestCodexUsage
+
+    if ($reading) {
+        Set-LimitValues $values $reading 'live usage'
     }
     else {
-        $reading = Get-LatestCodexRateLimits
-
-        if ($reading -and -not (Test-UsageRegression $reading $values)) {
-            $values['FiveHourValue'] = [string]$reading.FiveHourValue
-            $values['FiveHourReset'] = $reading.FiveHourReset
-            $values['FiveHourResetEpoch'] = [string]$reading.FiveHourResetEpoch
-            $values['WeeklyValue'] = [string]$reading.WeeklyValue
-            $values['WeeklyReset'] = $reading.WeeklyReset
-            $values['WeeklyResetEpoch'] = [string]$reading.WeeklyResetEpoch
-            $values['LimitName'] = $reading.LimitName
-            $values['DataStatus'] = 'legacy event'
+        if ($values['DataStatus'] -eq 'live event' -or $values['DataStatus'] -eq 'live usage' -or $values['DataStatus'] -eq 'cached usage') {
+            $values['DataStatus'] = 'cached usage'
         }
         else {
             $values['DataStatus'] = 'cached snapshot'
