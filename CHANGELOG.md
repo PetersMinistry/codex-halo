@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.5.14
+
+- Follows the visible Codex account usage row first instead of the extra model-specific row, matching the app menu when both are present.
+- Allows live account usage to replace an older cached model-specific reset window, preventing the skin from staying on `May 23` when Codex shows `May 18`.
+- Treats near-full 5-hour usage as `100%` remaining to match the Codex menu display.
+
 ## 0.5.13
 
 - Adds reset-epoch tracking to the shared Codex cache so the updater can detect and reject stale source regressions.

@@ -72,6 +72,10 @@ function Convert-PercentRemaining {
         return 100
     }
 
+    if ($remaining -ge 99) {
+        return 100
+    }
+
     return $remaining
 }
 
@@ -406,7 +410,7 @@ if (Test-Path -LiteralPath $resolvedOutput) {
 
 $reading = Get-LatestCodexUsage
 
-if ($reading -and -not (Test-UsageRegression $reading $values)) {
+if ($reading) {
     $values['FiveHourValue'] = [string]$reading.FiveHourValue
     $values['FiveHourReset'] = $reading.FiveHourReset
     $values['FiveHourResetEpoch'] = [string]$reading.FiveHourResetEpoch

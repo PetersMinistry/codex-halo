@@ -39,13 +39,12 @@ function pickWindow(window) {
 }
 
 function pickRateLimit(usage) {
-  const candidates = [];
   if (usage.rate_limit && usage.rate_limit.primary_window && usage.rate_limit.secondary_window) {
-    candidates.push({
-      name: usage.rate_limit_name || 'root',
+    return {
+      name: usage.rate_limit_name || 'account usage',
       rateLimit: usage.rate_limit,
       isAdditional: false,
-    });
+    };
   }
 
   const additionalLimits = Array.isArray(usage.additional_rate_limits)
@@ -53,25 +52,15 @@ function pickRateLimit(usage) {
     : [];
   for (const item of additionalLimits) {
     if (item && item.rate_limit && item.rate_limit.primary_window && item.rate_limit.secondary_window) {
-      candidates.push({
+      return {
         name: item.limit_name || item.rate_limit_name || 'additional',
         rateLimit: item.rate_limit,
         isAdditional: true,
-      });
+      };
     }
   }
 
-  candidates.sort((left, right) => {
-    const leftReset = Number(left.rateLimit.secondary_window.reset_at || 0);
-    const rightReset = Number(right.rateLimit.secondary_window.reset_at || 0);
-    if (rightReset !== leftReset) {
-      return rightReset - leftReset;
-    }
-
-    return Number(right.isAdditional) - Number(left.isAdditional);
-  });
-
-  return candidates[0] || { name: null, rateLimit: null, isAdditional: false };
+  return { name: null, rateLimit: null, isAdditional: false };
 }
 
 function getJson(url, accessToken, redirectsRemaining = 2) {
