@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.5.13
+
+- Adds reset-epoch tracking to the shared Codex cache so the updater can detect and reject stale source regressions.
+- Chooses the usage row with the latest weekly reset, preferring active additional model rows over the stale root row when both are present.
+- Keeps the last app-backed cache if a fallback source reports an older 5-hour or weekly reset, preventing the skin from dropping back to old numbers after a reset.
+
 ## 0.5.12
 
 - Reads the same Codex usage source as the app account menu and prefers the active additional model limit when present, fixing stale percentages after account resets.
@@ -81,4 +87,3 @@
 ## Notes
 
 Codex Halo prefers Codex's own usage endpoint so it can match the app account menu. Legacy local `rate_limits` session events are kept only as a fallback.
-

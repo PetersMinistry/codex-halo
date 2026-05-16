@@ -116,9 +116,8 @@ If live usage cannot be read, Codex Halo keeps the last cached values or falls b
 
 ## Version
 
-Current build: `0.5.12`
+Current build: `0.5.13`
 
 See [CHANGELOG.md](CHANGELOG.md) for release notes.
 
 Released under the MIT License.
-

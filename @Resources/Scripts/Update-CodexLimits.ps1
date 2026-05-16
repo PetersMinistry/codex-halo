@@ -7,10 +7,13 @@ param(
 $default = [ordered]@{
     FiveHourValue = '100'
     FiveHourReset = 'pending'
+    FiveHourResetEpoch = '0'
     WeeklyValue   = '100'
     WeeklyReset   = 'pending'
+    WeeklyResetEpoch = '0'
     LastChecked   = 'never'
     DataStatus    = 'cached snapshot'
+    LimitName     = 'unknown'
 }
 
 function Read-LimitFile {
@@ -90,12 +93,14 @@ function Get-LimitWindowState {
         return [pscustomobject]@{
             Remaining = 100
             Reset     = (Format-Reset $resetTime $WindowMinutes)
+            ResetEpoch = ([DateTimeOffset]$resetTime).ToUnixTimeSeconds()
         }
     }
 
     return [pscustomobject]@{
         Remaining = (Convert-PercentRemaining $UsedPercent)
         Reset     = (Format-Reset $resetTime $WindowMinutes)
+        ResetEpoch = ([DateTimeOffset]$resetTime).ToUnixTimeSeconds()
     }
 }
 
@@ -196,15 +201,48 @@ function Get-LatestCodexUsage {
 
         return [pscustomobject]@{
             EventTime = Get-Date
+            LimitName = $usage.limit_name
             FiveHourValue = $primaryState.Remaining
             FiveHourReset = $primaryState.Reset
+            FiveHourResetEpoch = $primaryState.ResetEpoch
             WeeklyValue = $secondaryState.Remaining
             WeeklyReset = $secondaryState.Reset
+            WeeklyResetEpoch = $secondaryState.ResetEpoch
         }
     }
     catch {
         return $null
     }
+}
+
+function Test-UsageRegression {
+    param(
+        $Reading,
+        $Values
+    )
+
+    if (-not $Reading) {
+        return $false
+    }
+
+    if ($Values['DataStatus'] -ne 'live usage' -and $Values['DataStatus'] -ne 'cached usage') {
+        return $false
+    }
+
+    [double]$existingFive = 0
+    [double]$existingWeek = 0
+    [void][double]::TryParse([string]$Values['FiveHourResetEpoch'], [ref]$existingFive)
+    [void][double]::TryParse([string]$Values['WeeklyResetEpoch'], [ref]$existingWeek)
+
+    if ($existingFive -gt 0 -and $Reading.FiveHourResetEpoch -gt 0 -and $Reading.FiveHourResetEpoch -lt $existingFive) {
+        return $true
+    }
+
+    if ($existingWeek -gt 0 -and $Reading.WeeklyResetEpoch -gt 0 -and $Reading.WeeklyResetEpoch -lt $existingWeek) {
+        return $true
+    }
+
+    return $false
 }
 
 function Read-RateLimitFromLine {
@@ -236,13 +274,16 @@ function Read-RateLimitFromLine {
     $primaryState = Get-LimitWindowState $primary.used_percent $primary.resets_at ([int]$primary.window_minutes)
     $secondaryState = Get-LimitWindowState $secondary.used_percent $secondary.resets_at ([int]$secondary.window_minutes)
 
-    return [pscustomobject]@{
-        EventTime = $eventTime
-        FiveHourValue = $primaryState.Remaining
-        FiveHourReset = $primaryState.Reset
-        WeeklyValue = $secondaryState.Remaining
-        WeeklyReset = $secondaryState.Reset
-    }
+        return [pscustomobject]@{
+            EventTime = $eventTime
+            LimitName = 'legacy event'
+            FiveHourValue = $primaryState.Remaining
+            FiveHourReset = $primaryState.Reset
+            FiveHourResetEpoch = $primaryState.ResetEpoch
+            WeeklyValue = $secondaryState.Remaining
+            WeeklyReset = $secondaryState.Reset
+            WeeklyResetEpoch = $secondaryState.ResetEpoch
+        }
 }
 
 function Get-TailLines {
@@ -365,11 +406,14 @@ if (Test-Path -LiteralPath $resolvedOutput) {
 
 $reading = Get-LatestCodexUsage
 
-if ($reading) {
+if ($reading -and -not (Test-UsageRegression $reading $values)) {
     $values['FiveHourValue'] = [string]$reading.FiveHourValue
     $values['FiveHourReset'] = $reading.FiveHourReset
+    $values['FiveHourResetEpoch'] = [string]$reading.FiveHourResetEpoch
     $values['WeeklyValue'] = [string]$reading.WeeklyValue
     $values['WeeklyReset'] = $reading.WeeklyReset
+    $values['WeeklyResetEpoch'] = [string]$reading.WeeklyResetEpoch
+    $values['LimitName'] = $reading.LimitName
     $values['DataStatus'] = 'live usage'
 }
 else {
@@ -379,11 +423,14 @@ else {
     else {
         $reading = Get-LatestCodexRateLimits
 
-        if ($reading) {
+        if ($reading -and -not (Test-UsageRegression $reading $values)) {
             $values['FiveHourValue'] = [string]$reading.FiveHourValue
             $values['FiveHourReset'] = $reading.FiveHourReset
+            $values['FiveHourResetEpoch'] = [string]$reading.FiveHourResetEpoch
             $values['WeeklyValue'] = [string]$reading.WeeklyValue
             $values['WeeklyReset'] = $reading.WeeklyReset
+            $values['WeeklyResetEpoch'] = [string]$reading.WeeklyResetEpoch
+            $values['LimitName'] = $reading.LimitName
             $values['DataStatus'] = 'legacy event'
         }
         else {
@@ -397,7 +444,7 @@ $values['LastChecked'] = Get-Date -Format 'h:mm tt'
 $lines = New-Object System.Collections.Generic.List[string]
 $lines.Add('; Rainmeter Codex Halo')
 $lines.Add('[Variables]')
-foreach ($key in @('FiveHourValue', 'FiveHourReset', 'WeeklyValue', 'WeeklyReset', 'LastChecked', 'DataStatus')) {
+foreach ($key in @('FiveHourValue', 'FiveHourReset', 'FiveHourResetEpoch', 'WeeklyValue', 'WeeklyReset', 'WeeklyResetEpoch', 'LastChecked', 'DataStatus', 'LimitName')) {
     $lines.Add("$key=$($values[$key])")
 }
 
