@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-  <strong>A Rainmeter skin for local Codex rate-limit status.</strong><br>
+  <strong>A Rainmeter skin for Codex usage status.</strong><br>
   See your 5-hour and weekly Codex limits at a glance, right on the Windows desktop.
 </p>
 
@@ -48,13 +48,14 @@
 - Control panel for switching layouts
 - Manual refresh from the skin or Rainmeter right-click menu
 - Respects Rainmeter's native Position menu for layer behavior
-- Local-only data reading, with no external API call
+- Reads Codex's own usage source for app-matched values, with a local cache fallback
 
 ## Requirements
 
 - Windows
 - Rainmeter
-- Codex installed and writing local session logs
+- Codex installed and signed in
+- Node.js on `PATH` for app-matched live usage
 - PowerShell, included with Windows
 
 ## Install
@@ -105,17 +106,17 @@ The current values are stored locally in:
 @Resources\CodexLimits.inc
 ```
 
-The 5-minute local refresh updates displayed values without reloading the active skin, so Rainmeter's own position and layer settings stay under user control.
+The guarded 30-second refresh updates displayed values without reloading the active skin, so Rainmeter's own position and layer settings stay under user control.
 
 ## Privacy
 
-Codex Halo reads local Codex session files from the current Windows user. It does not scrape the web, call a hosted API, or send your usage data anywhere.
+Codex Halo uses the local sign-in token already stored by Codex and asks Codex's own usage endpoint for the same values shown in the app account menu. It does not use a third-party endpoint or custom server.
 
-Compatibility depends on Codex writing local `rate_limits` events in its session logs. If no current event is found, Codex Halo keeps the last cached values.
+If live usage cannot be read, Codex Halo keeps the last cached values or falls back to legacy local `rate_limits` session events.
 
 ## Version
 
-Current build: `0.5.11`
+Current build: `0.5.12`
 
 See [CHANGELOG.md](CHANGELOG.md) for release notes.
 

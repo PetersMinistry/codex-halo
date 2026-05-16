@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.5.12
+
+- Reads the same Codex usage source as the app account menu and prefers the active additional model limit when present, fixing stale percentages after account resets.
+- Adds a small Node.js helper for the live usage request, avoiding the Windows PowerShell TLS path that can fail against the Codex usage endpoint on this machine.
+- Keeps previously good usage values cached if the live request fails, instead of overwriting them with stale legacy event data.
+- Splits manual refreshes from automatic timer refreshes, routes automatic refreshes through the Lua elapsed-time guard, and adds a shared updater lock so refreshes cannot stack up or write the limit cache at the same time.
+- Adds a short cache-age guard inside the updater, so accidental extra Rainmeter launches do not repeatedly call the usage endpoint or rewrite the shared cache.
+
 ## 0.5.11
 
 - Tightens Codex limit refresh behavior to reduce visible drift from the Codex panel: default refresh interval is now 30 seconds.
@@ -72,5 +80,5 @@
 
 ## Notes
 
-Codex Halo reads local Codex session logs only. It does not call an external API. Compatibility depends on Codex continuing to write local `rate_limits` events.
+Codex Halo prefers Codex's own usage endpoint so it can match the app account menu. Legacy local `rate_limits` session events are kept only as a fallback.
 

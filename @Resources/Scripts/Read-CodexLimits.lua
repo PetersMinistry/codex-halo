@@ -18,14 +18,17 @@ local function getRefreshSeconds()
 end
 
 function Update()
+    AutoRefreshLimits()
+    return 0
+end
+
+function AutoRefreshLimits()
     local refreshSeconds = getRefreshSeconds()
     local now = os.time()
 
     if now - lastAutoRefresh >= refreshSeconds then
-        RefreshLimits(nil, now)
+        RefreshLimits(nil, now, false)
     end
-
-    return 0
 end
 
 local function readLimitsFile(path)
@@ -83,8 +86,16 @@ function ReadLimits()
     SKIN:Bang('!Redraw')
 end
 
-function RefreshLimits(measureName, now)
+function ManualRefreshLimits(measureName)
+    RefreshLimits(measureName, os.time(), true)
+end
+
+function RefreshLimits(measureName, now, force)
     now = now or os.time()
+
+    if not force and now - lastAutoRefresh < getRefreshSeconds() then
+        return
+    end
 
     if SKIN:GetVariable('RefreshBusy', '0') == '1' then
         local busyTimeout = math.max(getRefreshSeconds() + 10, 40)
@@ -98,13 +109,17 @@ function RefreshLimits(measureName, now)
     lastAutoRefresh = now
     refreshStarted = now
     SKIN:Bang('!SetVariable', 'RefreshBusy', '1')
-    SKIN:Bang('!CommandMeasure', measureName or 'MeasureRefresh', 'Run')
+
+    local refreshMeasure = measureName or 'MeasureRefresh'
+    SKIN:Bang('!EnableMeasure', refreshMeasure)
+    SKIN:Bang('!CommandMeasure', refreshMeasure, 'Run')
 end
 
 function FinishRefresh()
     lastAutoRefresh = os.time()
     refreshStarted = 0
     SKIN:Bang('!SetVariable', 'RefreshBusy', '0')
+    SKIN:Bang('!DisableMeasure', 'MeasureRefresh')
     ReadLimits()
 end
 

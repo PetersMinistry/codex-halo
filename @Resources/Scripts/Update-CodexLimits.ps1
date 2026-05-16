@@ -112,6 +112,101 @@ function Get-CodexRoot {
     return $null
 }
 
+function Get-NodeExecutable {
+    foreach ($name in @('node.exe', 'node')) {
+        $command = Get-Command $name -ErrorAction SilentlyContinue
+        if ($command -and $command.Source) {
+            return $command.Source
+        }
+    }
+
+    return $null
+}
+
+function Get-UsageWindowState {
+    param($Window)
+
+    if (-not $Window) {
+        return $null
+    }
+
+    $usedPercent = $Window.used_percent
+    $resetsAt = $Window.reset_at
+    $windowSeconds = $Window.limit_window_seconds
+
+    if ($null -eq $usedPercent -or $null -eq $resetsAt) {
+        return $null
+    }
+
+    $windowMinutes = 0
+    if ($windowSeconds) {
+        $windowMinutes = [int][Math]::Round(([double]$windowSeconds) / 60)
+    }
+
+    return Get-LimitWindowState $usedPercent ([double]$resetsAt) $windowMinutes
+}
+
+function Get-LatestCodexUsage {
+    $node = Get-NodeExecutable
+    if (-not $node) {
+        return $null
+    }
+
+    $helperPath = Join-Path $PSScriptRoot 'Fetch-CodexUsage.js'
+    if (-not (Test-Path -LiteralPath $helperPath)) {
+        return $null
+    }
+
+    try {
+        $processInfo = New-Object System.Diagnostics.ProcessStartInfo
+        $processInfo.FileName = $node
+        $processInfo.Arguments = '"' + $helperPath.Replace('"', '\"') + '"'
+        $processInfo.UseShellExecute = $false
+        $processInfo.RedirectStandardOutput = $true
+        $processInfo.RedirectStandardError = $true
+        $processInfo.CreateNoWindow = $true
+
+        $process = [System.Diagnostics.Process]::Start($processInfo)
+        if (-not $process.WaitForExit(20000)) {
+            try {
+                $process.Kill()
+            }
+            catch {
+            }
+
+            return $null
+        }
+
+        if ($process.ExitCode -ne 0) {
+            return $null
+        }
+
+        $payload = $process.StandardOutput.ReadToEnd()
+        if (-not $payload) {
+            return $null
+        }
+
+        $usage = $payload | ConvertFrom-Json -ErrorAction Stop
+        $primaryState = Get-UsageWindowState $usage.primary
+        $secondaryState = Get-UsageWindowState $usage.secondary
+
+        if (-not $primaryState -or -not $secondaryState) {
+            return $null
+        }
+
+        return [pscustomobject]@{
+            EventTime = Get-Date
+            FiveHourValue = $primaryState.Remaining
+            FiveHourReset = $primaryState.Reset
+            WeeklyValue = $secondaryState.Remaining
+            WeeklyReset = $secondaryState.Reset
+        }
+    }
+    catch {
+        return $null
+    }
+}
+
 function Read-RateLimitFromLine {
     param([string]$Line)
 
@@ -246,19 +341,55 @@ if (-not (Test-Path -LiteralPath $outputDir)) {
     New-Item -ItemType Directory -Force -Path $outputDir | Out-Null
 }
 
+$lockStream = $null
+$lockPath = Join-Path $outputDir 'CodexLimits.update.tmp'
+try {
+    $lockStream = [System.IO.File]::Open($lockPath, [System.IO.FileMode]::OpenOrCreate, [System.IO.FileAccess]::ReadWrite, [System.IO.FileShare]::None)
+}
+catch {
+    return
+}
+
+try {
 $values = Read-LimitFile -Path $resolvedOutput
 
-$reading = Get-LatestCodexRateLimits
+if (Test-Path -LiteralPath $resolvedOutput) {
+    $cacheAge = (Get-Date) - (Get-Item -LiteralPath $resolvedOutput).LastWriteTime
+    if (
+        $cacheAge.TotalSeconds -lt 30 -and
+        ($values['DataStatus'] -eq 'live usage' -or $values['DataStatus'] -eq 'cached usage')
+    ) {
+        return
+    }
+}
+
+$reading = Get-LatestCodexUsage
 
 if ($reading) {
     $values['FiveHourValue'] = [string]$reading.FiveHourValue
     $values['FiveHourReset'] = $reading.FiveHourReset
     $values['WeeklyValue'] = [string]$reading.WeeklyValue
     $values['WeeklyReset'] = $reading.WeeklyReset
-    $values['DataStatus'] = 'live event'
+    $values['DataStatus'] = 'live usage'
 }
 else {
-    $values['DataStatus'] = 'cached snapshot'
+    if ($values['DataStatus'] -eq 'live usage' -or $values['DataStatus'] -eq 'cached usage') {
+        $values['DataStatus'] = 'cached usage'
+    }
+    else {
+        $reading = Get-LatestCodexRateLimits
+
+        if ($reading) {
+            $values['FiveHourValue'] = [string]$reading.FiveHourValue
+            $values['FiveHourReset'] = $reading.FiveHourReset
+            $values['WeeklyValue'] = [string]$reading.WeeklyValue
+            $values['WeeklyReset'] = $reading.WeeklyReset
+            $values['DataStatus'] = 'legacy event'
+        }
+        else {
+            $values['DataStatus'] = 'cached snapshot'
+        }
+    }
 }
 
 $values['LastChecked'] = Get-Date -Format 'h:mm tt'
@@ -271,3 +402,9 @@ foreach ($key in @('FiveHourValue', 'FiveHourReset', 'WeeklyValue', 'WeeklyReset
 }
 
 Set-Content -LiteralPath $resolvedOutput -Value $lines -Encoding ASCII
+}
+finally {
+    if ($lockStream) {
+        $lockStream.Dispose()
+    }
+}
